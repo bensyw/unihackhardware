@@ -40,17 +40,37 @@ for i in unpacklist:
 
 result[0]
 
+
 resultdict = {'carNum': result[0],
               'parkingLotNum': '001'}
 
 resultdict
 
-import json
-import requests
+
 # %%
 
-payload = resultdict
-headers = {'content-type': 'application/json'}
-url = 'api/parking/'
+# import json
+# import requests
+# payload = resultdict
+# headers = {'content-type': 'application/json'}
+# url = 'api/parking/'
+#
+# response = requests.post(url, data=json.dumps(payload), headers=headers)
 
-response = requests.post(url, data=json.dumps(payload), headers=headers)
+
+# %%
+
+def GetJsonDict:
+    if not plates_next:  # If there is a plate number
+        resultdict = {
+            'carNum': plates_next,
+            'parkingLotNum': '001',
+            'Status' = 'Parked'
+        }
+    else:
+        resultdict = {
+            'carNum': plates_prev,
+            'parkingLotNum': '001',
+            'Status' = 'Drived_away'
+        }
+    return resultdict
