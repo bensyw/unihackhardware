@@ -48,12 +48,15 @@ def upload_image(image_path):
             return False
 
 
-def getInfoImage():
+def get_info_image():
     # Don't need to implement if we only process one image at a time
     pass
 
 
-def getInfoAll():
+def get_info_all():
+    """
+    :return: all json format HTTP response
+    """
     get_call = requests.get('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks',
                             headers=json_headers, auth=(user, password))
     print(get_call.text, "TEXT")
@@ -71,7 +74,7 @@ def run_recog():
 def delete(id_name):
     """
     delete the upload image that correspond to the unique id
-    :param id: unique number that match a upload image
+    :param id_name: unique number that match a upload image
     :return: True if delete correctly, false if delete unsuccessfully, or the id number doesn't exist
     """
     response = requests.delete('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks/' + str(id_name), headers=json_headers, auth=(user, password))
@@ -85,8 +88,12 @@ def delete(id_name):
         return False
 
 
-def getAllList():
-    jsonreturned = getInfoAll()
+def get_all_list():
+    """
+    function get all unique ids from API and return them
+    :return:  all unique ids
+    """
+    jsonreturned = get_info_all()
     tasks_dict = jsonreturned['tasks']
     upload_ids = [field["uri"] for field in tasks_dict]
     result = []
@@ -97,9 +104,13 @@ def getAllList():
     return result
 
 
-def Initialize():
-    if len(getAllList()):
-        for id_name in getAllList():
+def initialize():
+    """
+    delete all cached tasks
+    :return: if there are thing is side API website return True, otherwise False
+    """
+    if len(get_all_list()):
+        for id_name in get_all_list():
             delete(id_name)
         return True
     else:
@@ -109,10 +120,10 @@ def Initialize():
 if __name__ == "__main__":
     # a = upload_image("aussie.jpg")
     # print(a)
-    data = getInfoAll()
+    data = get_info_all()
     print(data)
 
-    Initialize()
+    initialize()
 
     #ListofUploadIds = GetAllList()
     #print(ListofUploadIds)
