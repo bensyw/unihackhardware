@@ -35,13 +35,8 @@ def GetInfoImage():
 
 
 def GetInfoAll():
-    pass
-    # get_call = requests.get('http://smartvision.aiam-dh.com:8080/api/tasks',
-    #                         headers=headers, auth=HTTPBasicAuth('demo1', 'hackathon7493'))
-    # print(get_call, "POST call")
-    # print(get_call.text, "TEXT")
-    # print(get_call.content, "CONTENT")
-    # print(get_call.status_code, "STATUS CODE")
+    get_call = requests.get('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks',
+                            headers=headers, auth=HTTPBasicAuth('demo1', 'hackathon7493'))
 
 
 def PutUpdate():
