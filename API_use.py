@@ -68,13 +68,13 @@ def PutRun():
     pass
 
 
-def Delete(id):
+def Delete(id_name):
     """
     delete the upload image that correspond to the unique id
     :param id: unique number that match a upload image
     :return: True if delete correctly, false if delete unsuccessfully, or the id number doesn't exist
     """
-    response = requests.delete('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks/' + str(id), headers=json_headers, auth=(user, password))
+    response = requests.delete('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks/' + str(id_name), headers=json_headers, auth=(user, password))
     response_json = json.loads(response.text)
     if 'result' in response_json:
         if response_json['result']:
@@ -102,8 +102,10 @@ if __name__ == "__main__":
     # print(a)
     data = GetInfoAll()
     print(data)
-    if Delete(62):
-        print(True)
+
+    for id_name in GetAllList():
+        Delete(id_name)
+
 
 
     #ListofUploadIds = GetAllList()
