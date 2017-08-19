@@ -3,6 +3,7 @@
 import requests
 import base64
 from requests.auth import HTTPBasicAuth
+import re
 import json
 
 
@@ -18,23 +19,30 @@ json_headers = {
 #                           headers=headers, data=data, auth=HTTPBasicAuth('demo1', 'hackathon7493'))
 
 
-# input is the path to the image
 def upload_image(image_path):
-    with open("aussie.jpg", "rb") as image_file:
+    """
+    upload image to API
+    :param image_path: the path to the file
+    :return: true or false, true mean upload successfully, false mean failed
+    """
+    with open(image_path, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read())
         data_send = '{"service":"tagging1","image":"' + encoded_string.decode() + """ "}"""
         post_call = requests.post('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks', headers=json_headers, data=data_send, auth=HTTPBasicAuth(user, password))
         # print out debug info
-        # print(post_call, "POST call")
-        # print(post_call.text, "TEXT")
-        # print(post_call.content, "CONTENT")
-        # print(post_call.status_code, "STATUS CODE")
-
+        print(post_call, "POST call")
+        print(post_call.text, "TEXT")
+        print(post_call.content, "CONTENT")
+        print(post_call.status_code, "STATUS CODE")
+        print(type(post_call.status_code))
+        if re.match(r'201', str(post_call.status_code)):
+            return True
+        else:
+            return False
 
 def GetInfoImage():
-        # Don't need to implement if we only process one image at a time
+    # Don't need to implement if we only process one image at a time
     pass
-
 
 def GetInfoAll():
     get_call = requests.get('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks', headers=json_headers, auth=HTTPBasicAuth(user, password))
@@ -50,11 +58,10 @@ def PutRun():
 
 
 def Delete():
-    import requests
-
-requests.delete('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks/123', headers=headers, auth=('usr', 'pwd'))
+    requests.delete('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks/123', headers=json_headers, auth=(user, password))
     pass
 
 if __name__ == "__main__":
-    data = GetInfoAll()
-    print(data)
+    print(upload_image("aussie.jpg"))
+    # data = GetInfoAll()
+    # print(data)
