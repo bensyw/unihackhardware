@@ -26,8 +26,10 @@ def upload_image(image_path):
     """
     with open(image_path, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read())
-        data_send = '{"service":"tagging1","image":"' + encoded_string.decode() + """ "}"""
-        post_call = requests.post('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks', headers=json_headers, data=data_send, auth=(user, password))
+        data_send = '{"service":"tagging1","image":"' + \
+            encoded_string.decode() + """ "}"""
+        post_call = requests.post('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks',
+                                  headers=json_headers, data=data_send, auth=(user, password))
         # print out debug info
         print(post_call, "POST call")
         print(post_call.text, "TEXT")
@@ -45,14 +47,18 @@ def upload_image(image_path):
         else:
             return False
 
+
 def GetInfoImage():
     # Don't need to implement if we only process one image at a time
     pass
 
+
 def GetInfoAll():
-    get_call = requests.get('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks', headers=json_headers, auth=(user, password))
-    print(get_call.text, "TEXT")
+    get_call = requests.get('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks',
+                            headers=json_headers, auth=(user, password))
+    # print(get_call.text, "TEXT")
     return json.loads(get_call.text)
+
 
 def PutUpdate():
     pass
@@ -68,7 +74,20 @@ def Delete(id):
     :param id: unique number that match a upload image
     :return: True if delete correctly, false if delete unsuccessfully
     """
-    requests.delete('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks/' + id, headers=json_headers, auth=(user, password))
+    requests.delete('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks/' +
+                    id, headers=json_headers, auth=(user, password))
+
+
+def GetAllList():
+    jsonreturned = GetInfoAll()
+    tasks_dict = jsonreturned['tasks']
+    upload_ids = [field["uri"] for field in tasks_dict]
+    result = []
+    for teststr in upload_ids:
+        testint = int(teststr.replace(
+            'http://smartvision.aiam-dh.com:8080/api/v1.0/tasks/', ''))
+        result.append(testint)
+    return result
 
 
 if __name__ == "__main__":
@@ -77,3 +96,6 @@ if __name__ == "__main__":
 
     data = GetInfoAll()
     print(data)
+
+    ListofUploadIds = GetAllList()
+    print(ListofUploadIds)
