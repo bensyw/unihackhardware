@@ -97,16 +97,22 @@ def GetAllList():
     return result
 
 
+def Initialize():
+    if len(GetAllList()):
+        for id in GetAllList():
+            Delete(id)
+        return True
+    else:
+        return False
+
+
 if __name__ == "__main__":
     # a = upload_image("aussie.jpg")
     # print(a)
     data = GetInfoAll()
     print(data)
 
-    for id_name in GetAllList():
-        Delete(id_name)
-
-
+    Initialize()
 
     #ListofUploadIds = GetAllList()
     #print(ListofUploadIds)
