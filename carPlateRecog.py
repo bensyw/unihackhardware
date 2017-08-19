@@ -61,6 +61,13 @@ resultdict
 # %%
 
 def GetJsonDict(plates_next):
+
+
+'''
+Return: dictionary
+If plates_next is empty string, return previous plates as leaving plate.
+Otherwise return as parking plate
+'''
     if not plates_next:  # If there is a plate number
         resultdict = {
             'carNum': plates_next,
@@ -75,6 +82,12 @@ def GetJsonDict(plates_next):
 
 
 def IsLeaving(plates_next):
+
+
+"""
+Return: Boolean
+If a car is leaving, return True. Otherwise return False.
+"""
     if not plates_next:
         return True
     else:
@@ -82,6 +95,11 @@ def IsLeaving(plates_next):
 
 
 def IsChanged(plates_next, plates_prev):
+
+"""
+Return: Boolean
+If plate is changed, return True. Otherwise return False.
+"""
     if plates_next != plates_prev:
         return True
     else:
@@ -89,6 +107,10 @@ def IsChanged(plates_next, plates_prev):
 
 
 def ParkAPI(IsLeaving, resultdict):
+
+"""
+POST resultdict to start/leaving based on Boolean IsLeaving
+"""
     payload = resultdict
     headers = {'content-type': 'application/json'}
     if IsLeaving:
