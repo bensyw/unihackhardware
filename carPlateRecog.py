@@ -60,17 +60,39 @@ resultdict
 
 # %%
 
-def GetJsonDict:
+def GetJsonDict(plates_next):
     if not plates_next:  # If there is a plate number
         resultdict = {
             'carNum': plates_next,
             'parkingLotNum': '001',
-            'Status' = 'Parked'
         }
     else:
         resultdict = {
             'carNum': plates_prev,
             'parkingLotNum': '001',
-            'Status' = 'Drived_away'
         }
     return resultdict
+
+
+def IsLeaving(plates_next):
+    if not plates_next:
+        return True
+    else:
+        return False
+
+
+def IsChanged(plates_next, plates_prev):
+    if plates_next != plates_prev:
+        return True
+    else:
+        return False
+
+
+def ParkAPI(IsLeaving, resultdict):
+    payload = resultdict
+    headers = {'content-type': 'application/json'}
+    if IsLeaving:
+        url = 'api/parking/leave'
+    else:
+        url = 'api/parking/'
+    response = requests.post(url, data=json.dumps(payload), headers=headers)
