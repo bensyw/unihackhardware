@@ -2,7 +2,6 @@
 
 import requests
 import base64
-from requests.auth import HTTPBasicAuth
 import re
 import json
 
@@ -23,20 +22,26 @@ def upload_image(image_path):
     """
     upload image to API
     :param image_path: the path to the file
-    :return: true or false, true mean upload successfully, false mean failed
+    :return: unique id number for the upload image, else return false
     """
     with open(image_path, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read())
         data_send = '{"service":"tagging1","image":"' + encoded_string.decode() + """ "}"""
-        post_call = requests.post('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks', headers=json_headers, data=data_send, auth=HTTPBasicAuth(user, password))
+        post_call = requests.post('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks', headers=json_headers, data=data_send, auth=(user, password))
         # print out debug info
         print(post_call, "POST call")
         print(post_call.text, "TEXT")
         print(post_call.content, "CONTENT")
         print(post_call.status_code, "STATUS CODE")
         print(type(post_call.status_code))
-        if re.match(r'201', str(post_call.status_code)):
-            return True
+
+        response_json = json.loads(post_call.text)
+
+        if 'task' in response_json:
+            if 'uri' in response_json['task']:
+                return response_json['task']['uri'].split('/')[-1]
+            else:
+                return False
         else:
             return False
 
@@ -45,7 +50,7 @@ def GetInfoImage():
     pass
 
 def GetInfoAll():
-    get_call = requests.get('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks', headers=json_headers, auth=HTTPBasicAuth(user, password))
+    get_call = requests.get('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks', headers=json_headers, auth=(user, password))
     print(get_call.text, "TEXT")
     return json.loads(get_call.text)
 
@@ -58,10 +63,14 @@ def PutRun():
 
 
 def Delete():
+
     requests.delete('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks/123', headers=json_headers, auth=(user, password))
     pass
 
 if __name__ == "__main__":
-    print(upload_image("aussie.jpg"))
+
+    a = upload_image("aussie.jpg")
+    print(a)
+
     # data = GetInfoAll()
     # print(data)
