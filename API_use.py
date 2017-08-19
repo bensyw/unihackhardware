@@ -74,7 +74,8 @@ def Delete(id):
     :param id: unique number that match a upload image
     :return: True if delete correctly, false if delete unsuccessfully, or the id number doesn't exist
     """
-    response = requests.delete('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks/' + str(id), headers=json_headers, auth=(user, password))
+    response = requests.delete('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks/' +
+                               str(id), headers=json_headers, auth=(user, password))
     response_json = json.loads(response.text)
     if 'result' in response_json:
         if response_json['result']:
@@ -97,14 +98,21 @@ def GetAllList():
     return result
 
 
+def Initialize():
+    if len(GetAllList()):
+        for id in GetAllList():
+            Delete(id)
+        return True
+    else:
+        return False
+
+
 if __name__ == "__main__":
     # a = upload_image("aussie.jpg")
     # print(a)
     data = GetInfoAll()
     print(data)
-    if Delete(62):
-        print(True)
-
+    Initialize()
 
     #ListofUploadIds = GetAllList()
-    #print(ListofUploadIds)
+    # print(ListofUploadIds)
