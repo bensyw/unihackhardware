@@ -62,13 +62,11 @@ def GetJsonDict(plates_prev, plates_next):
         resultdict = {
             'carNum': plates_next,
             'parkingLotNum': '001',
-            'Status': 'Start Parking'
         }
     else:
         resultdict = {
             'carNum': plates_prev,
             'parkingLotNum': '001',
-            'Status': 'Leaving'
         }
     return resultdict
 
@@ -102,9 +100,9 @@ def ParkAPI(IsLeaving, resultdict):
     payload = resultdict
     headers = {'content-type': 'application/json'}
     if IsLeaving:
-        url = 'api/parking/leave'
+        url = 'http://10.1.0.154:8000/api/parking/leave'
     else:
-        url = 'api/parking/start'
+        url = 'http://10.1.0.154:8000/api/parking/start'
     response = requests.post(url, data=json.dumps(payload), headers=headers)
 
 
@@ -120,6 +118,14 @@ print(IsChanged(testNum1, testNum2))
 # Test IsLeaving
 print(IsLeaving(TestNumEmpty))
 # Test GetJsonDict (Leaving)
-GetJsonDict(testNum1, TestNumEmpty)
+Num1Leaving = GetJsonDict(testNum1, TestNumEmpty)
+Num1Flag = IsLeaving(TestNumEmpty)
 # Test GetJsonDict (Start parking)
-GetJsonDict(TestNumEmpty, testNum2)
+Num2Parking = GetJsonDict(TestNumEmpty, testNum2)
+Num2Flag = IsLeaving(testNum2)
+
+# %% Posting Test
+# Test Case 2
+ParkAPI(Num2Flag, Num2Parking)
+# Test Case 1
+ParkAPI(Num1Flag, Num1Leaving)
