@@ -16,27 +16,32 @@ headers = {
 data = '{"service":"tagging1","image":"' + encoded_string.decode() + """ "}"""
 # print(data)
 
-post_call = requests.post('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks',
-                          headers=headers, data=data, auth=HTTPBasicAuth('demo1', 'hackathon7493'))
+# post_call = requests.post('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks',
+#                           headers=headers, data=data, auth=HTTPBasicAuth('demo1', 'hackathon7493'))
 
-
-# print(post_call, "POST call")
-# print(post_call.text, "TEXT")
-# print(post_call.content, "CONTENT")
-# print(post_call.status_code, "STATUS CODE")
 
 def PostImage():
     post_call = requests.post('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks',
                               headers=headers, data=data, auth=HTTPBasicAuth('demo1', 'hackathon7493'))
+    print(post_call, "POST call")
+    print(post_call.text, "TEXT")
+    print(post_call.content, "CONTENT")
+    print(post_call.status_code, "STATUS CODE")
 
 
 def GetInfoImage():
+        # Don't need to implement if we only process one image at a time
     pass
 
 
 def GetInfoAll():
-    get_call = requests.get('http://smartvision.aiam-dh.com:8080/api/tasks',
-                            headers=headers, auth=HTTPBasicAuth('demo1', 'hackathon7493'))
+    pass
+    # get_call = requests.get('http://smartvision.aiam-dh.com:8080/api/tasks',
+    #                         headers=headers, auth=HTTPBasicAuth('demo1', 'hackathon7493'))
+    # print(get_call, "POST call")
+    # print(get_call.text, "TEXT")
+    # print(get_call.content, "CONTENT")
+    # print(get_call.status_code, "STATUS CODE")
 
 
 def PutUpdate():
