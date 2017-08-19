@@ -66,11 +66,22 @@ def get_info_all():
 def update_image():
     pass
 
-
+# return dict format
+# "task": {
+#  "description": "Milk, Cheese ",
+#  "confidence": "80,90",
+#  "location": "70,80,100,110",
+#  "scanned": true,
+#  "uploaded": true,
+#  "id": 2,
+#  "userid": 2,
+#  "service": "azure1"
+#  },
 def run_recog(id_name):
     data = '{"scanned": true}'
-    requests.put('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks/run/' + str(id_name),
+    response = requests.put('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks/run/' + str(id_name),
                  headers=json_headers, data=data, auth=(user, password))
+    return json.loads(response.text)
 
 
 
