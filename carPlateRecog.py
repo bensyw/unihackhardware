@@ -128,6 +128,14 @@ Num2Leaving = GetJsonDict(testNum2, TestNumEmpty)
 Num2ParkingFlag = IsLeaving(testNum2)
 Num2LeavingFlag = IsLeaving(TestNumEmpty)
 
+# Test if end works
+
+testNum3 = 'TESTEND'
+Num3Leaving = GetJsonDict(testNum3, TestNumEmpty)
+Num3Parking = GetJsonDict(TestNumEmpty, testNum3)
+Num3LeavingFlag = IsLeaving(TestNumEmpty)
+Num3ParkingFlag = IsLeaving(testNum3)
+
 # %% New Test
 # New transaction Car 1 parking leaving
 Num1ParkingFlag
@@ -139,3 +147,8 @@ Num2ParkingFlag
 Num2LeavingFlag
 ParkAPI(Num2ParkingFlag, Num2Parking)
 ParkAPI(Num2LeavingFlag, Num2Leaving)
+# New transaction Car3
+Num3ParkingFlag
+Num3LeavingFlag
+ParkAPI(Num3ParkingFlag, Num3Parking)
+ParkAPI(Num3LeavingFlag, Num3Leaving)
