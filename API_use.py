@@ -62,15 +62,18 @@ def PutRun():
     pass
 
 
-def Delete():
+def Delete(id):
+    """
 
-    requests.delete('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks/123', headers=json_headers, auth=(user, password))
-    pass
+    :param id: unique number that match a upload image
+    :return: True if delete correctly, false if delete unsuccessfully
+    """
+    requests.delete('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks/' + id, headers=json_headers, auth=(user, password))
+
 
 if __name__ == "__main__":
+    # a = upload_image("aussie.jpg")
+    # print(a)
 
-    a = upload_image("aussie.jpg")
-    print(a)
-
-    # data = GetInfoAll()
-    # print(data)
+    data = GetInfoAll()
+    print(data)
