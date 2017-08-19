@@ -67,8 +67,11 @@ def update_image():
     pass
 
 
-def run_recog():
-    pass
+def run_recog(id_name):
+    data = '{"scanned": true}'
+    requests.put('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks/run/' + str(id_name),
+                 headers=json_headers, data=data, auth=(user, password))
+
 
 
 def delete(id_name):
