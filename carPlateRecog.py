@@ -119,13 +119,23 @@ print(IsChanged(testNum1, testNum2))
 print(IsLeaving(TestNumEmpty))
 # Test GetJsonDict (Leaving)
 Num1Leaving = GetJsonDict(testNum1, TestNumEmpty)
-Num1Flag = IsLeaving(TestNumEmpty)
+Num1Parking = GetJsonDict(TestNumEmpty, testNum1)
+Num1LeavingFlag = IsLeaving(TestNumEmpty)
+Num1ParkingFlag = IsLeaving(testNum1)
 # Test GetJsonDict (Start parking)
 Num2Parking = GetJsonDict(TestNumEmpty, testNum2)
-Num2Flag = IsLeaving(testNum2)
+Num2Leaving = GetJsonDict(testNum2, TestNumEmpty)
+Num2ParkingFlag = IsLeaving(testNum2)
+Num2LeavingFlag = IsLeaving(TestNumEmpty)
 
-# %% Posting Test
-# Test Case 2
-ParkAPI(Num2Flag, Num2Parking)
-# Test Case 1
-ParkAPI(Num1Flag, Num1Leaving)
+# %% New Test
+# New transaction Car 1 parking leaving
+Num1ParkingFlag
+Num1LeavingFlag
+ParkAPI(Num1ParkingFlag, Num1Parking)
+ParkAPI(Num1LeavingFlag, Num1Leaving)
+# New transaction Car 2 parking leaving
+Num2ParkingFlag
+Num2LeavingFlag
+ParkAPI(Num2ParkingFlag, Num2Parking)
+ParkAPI(Num2LeavingFlag, Num2Leaving)
