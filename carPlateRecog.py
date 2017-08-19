@@ -71,6 +71,24 @@ def GetJsonDict(plates_prev, plates_next):
     return resultdict
 
 
+def Sendconflict(plates_prev, plates_next):
+    """
+    Resolve conflict
+    """
+    leavingDict = {
+        'carNum': plates_prev,
+        'parkingLotNum': '001',
+    }
+    startingDict = {
+        'carNum': plates_next,
+        'parkingLotNum': '001',
+    }
+    # Leaving
+    ParkAPI(True, leavingDict)
+    # Starting
+    ParkAPI(False, startingDict)
+
+
 def IsLeaving(plates_next):
     """
     Return: Boolean
@@ -152,3 +170,8 @@ Num3ParkingFlag
 Num3LeavingFlag
 ParkAPI(Num3ParkingFlag, Num3Parking)
 ParkAPI(Num3LeavingFlag, Num3Leaving)
+
+# %%
+# Test conflict
+ParkAPI(Num1ParkingFlag, Num1Parking)
+Sendconflict(testNum1, testNum2)
