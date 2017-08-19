@@ -94,5 +94,5 @@ def ParkAPI(IsLeaving, resultdict):
     if IsLeaving:
         url = 'api/parking/leave'
     else:
-        url = 'api/parking/'
+        url = 'api/parking/start'
     response = requests.post(url, data=json.dumps(payload), headers=headers)
