@@ -48,27 +48,27 @@ def upload_image(image_path):
             return False
 
 
-def GetInfoImage():
+def getInfoImage():
     # Don't need to implement if we only process one image at a time
     pass
 
 
-def GetInfoAll():
+def getInfoAll():
     get_call = requests.get('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks',
                             headers=json_headers, auth=(user, password))
     print(get_call.text, "TEXT")
     return json.loads(get_call.text)
 
 
-def PutUpdate():
+def update_image():
     pass
 
 
-def PutRun():
+def run_recog():
     pass
 
 
-def Delete(id_name):
+def delete(id_name):
     """
     delete the upload image that correspond to the unique id
     :param id: unique number that match a upload image
@@ -85,8 +85,8 @@ def Delete(id_name):
         return False
 
 
-def GetAllList():
-    jsonreturned = GetInfoAll()
+def getAllList():
+    jsonreturned = getInfoAll()
     tasks_dict = jsonreturned['tasks']
     upload_ids = [field["uri"] for field in tasks_dict]
     result = []
@@ -98,9 +98,9 @@ def GetAllList():
 
 
 def Initialize():
-    if len(GetAllList()):
-        for id in GetAllList():
-            Delete(id)
+    if len(getAllList()):
+        for id_name in getAllList():
+            delete(id_name)
         return True
     else:
         return False
@@ -109,7 +109,7 @@ def Initialize():
 if __name__ == "__main__":
     # a = upload_image("aussie.jpg")
     # print(a)
-    data = GetInfoAll()
+    data = getInfoAll()
     print(data)
 
     Initialize()
