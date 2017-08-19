@@ -48,34 +48,50 @@ def upload_image(image_path):
             return False
 
 
-def GetInfoImage():
+def get_info_image():
     # Don't need to implement if we only process one image at a time
     pass
 
 
-def GetInfoAll():
+def get_info_all():
+    """
+    :return: all json format HTTP response
+    """
     get_call = requests.get('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks',
                             headers=json_headers, auth=(user, password))
     print(get_call.text, "TEXT")
     return json.loads(get_call.text)
 
 
-def PutUpdate():
+def update_image():
     pass
 
+# return dict format
+# "task": {
+#  "description": "Milk, Cheese ",
+#  "confidence": "80,90",
+#  "location": "70,80,100,110",
+#  "scanned": true,
+#  "uploaded": true,
+#  "id": 2,
+#  "userid": 2,
+#  "service": "azure1"
+#  },
+def run_recog(id_name):
+    data = '{"scanned": true}'
+    response = requests.put('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks/run/' + str(id_name),
+                 headers=json_headers, data=data, auth=(user, password))
+    return json.loads(response.text)
 
-def PutRun():
-    pass
 
 
-def Delete(id):
+def delete(id_name):
     """
     delete the upload image that correspond to the unique id
-    :param id: unique number that match a upload image
+    :param id_name: unique number that match a upload image
     :return: True if delete correctly, false if delete unsuccessfully, or the id number doesn't exist
     """
-    response = requests.delete('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks/' +
-                               str(id), headers=json_headers, auth=(user, password))
+    response = requests.delete('http://smartvision.aiam-dh.com:8080/api/v1.0/tasks/' + str(id_name), headers=json_headers, auth=(user, password))
     response_json = json.loads(response.text)
     if 'result' in response_json:
         if response_json['result']:
@@ -86,8 +102,12 @@ def Delete(id):
         return False
 
 
-def GetAllList():
-    jsonreturned = GetInfoAll()
+def get_all_list():
+    """
+    function get all unique ids from API and return them
+    :return:  all unique ids
+    """
+    jsonreturned = get_info_all()
     tasks_dict = jsonreturned['tasks']
     upload_ids = [field["uri"] for field in tasks_dict]
     result = []
@@ -98,10 +118,14 @@ def GetAllList():
     return result
 
 
-def Initialize():
-    if len(GetAllList()):
-        for id in GetAllList():
-            Delete(id)
+def initialize():
+    """
+    delete all cached tasks
+    :return: if there are thing is side API website return True, otherwise False
+    """
+    if len(get_all_list()):
+        for id_name in get_all_list():
+            delete(id_name)
         return True
     else:
         return False
@@ -110,9 +134,10 @@ def Initialize():
 if __name__ == "__main__":
     # a = upload_image("aussie.jpg")
     # print(a)
-    data = GetInfoAll()
+    data = get_info_all()
     print(data)
-    Initialize()
+
+    initialize()
 
     #ListofUploadIds = GetAllList()
-    # print(ListofUploadIds)
+    #print(ListofUploadIds)
